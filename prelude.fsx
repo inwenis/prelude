@@ -9,3 +9,5 @@ fsi.AddPrinter(fun (x: DateTimeOffset) ->
     let part2 = x.ToString ".fffffff"
     let part3 = x.ToString "zzz"
     sprintf "%s%s%s%s%s" part1 DIM part2 DIM_RESET part3)
+
+fsi.AddPrinter(fun (x: DateOnly) -> x.ToString "yyyy-MM-dd")
