@@ -4,15 +4,25 @@ open System
 let DIM                     = "\u001b[2m"
 let DIM_RESET               = "\u001b[22m"
 let FOREGROUND_BRIGHT_GREEN = "\u001b[92m"
+let FOREGROUND_ORANGE       = "\u001b[38;5;130m"
 let RESET_COLORS            = "\u001b[0m"
 
 fsi.AddPrinter(fun (x: DateTimeOffset) ->
-    let part1 = x.ToString "yyyy-MM-ddTHH:mm:ss"
-    let part2 = x.ToString ".fffffff"
-    let part3 = x.ToString "zzz"
-    sprintf "%s%s%s%s%s" part1 DIM part2 DIM_RESET part3)
+    let part1 = x.ToString "yyyy-MM-dd"
+    let part2 = x.ToString "HH:mm:ss"
+    let part3 = x.ToString ".fffffff"
+    let part4 = x.ToString "zzz"
+    sprintf "%s%s%s%s%s%s%s%s%s%s%s" FOREGROUND_ORANGE part1 DIM "T" DIM_RESET part2 DIM part3 DIM_RESET part4 RESET_COLORS)
 
-fsi.AddPrinter(fun (x: DateOnly) -> x.ToString "yyyy-MM-dd")
+fsi.AddPrinter(fun (x: DateTime) ->
+    let part1 = x.ToString "yyyy-MM-dd"
+    let part2 = x.ToString "HH:mm:ss"
+    let part3 = x.ToString ".fffffff"
+    sprintf "%s%s%s%s%s%s%s%s%s (%A)%s" FOREGROUND_ORANGE part1 DIM "T" DIM_RESET part2 DIM part3 DIM_RESET x.Kind RESET_COLORS)
+
+fsi.AddPrinter(fun (x: DateOnly) ->
+    let part1 = x.ToString "yyyy-MM-dd"
+    sprintf "%s%s%s" FOREGROUND_ORANGE part1 RESET_COLORS)
 
 // I have tested that FOREGROUND_BRIGHT_GREEN is used by default for numbers in vs code fsi.
 // We would like to use the same color for our custom decimal printer.
