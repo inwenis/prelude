@@ -1,4 +1,5 @@
 open System
+open System.Text.RegularExpressions
 
 // https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
 let DIM                     = "\u001b[2m"
@@ -13,6 +14,12 @@ let RESET_COLORS            = "\u001b[0m"
 // Note that the value name is included when calculating the width of the line. Hence with a long
 // enough value name, the line will be wrapped.
 fsi.PrintWidth <- fsi.PrintWidth + 33
+
+let regexExtract  regex                      text = Regex.Match(text, regex).Value
+let regexExtractg regex                      text = Regex.Match(text, regex).Groups.[1].Value
+let regexExtracts regex                      text = Regex.Matches(text, regex) |> Seq.map (fun x -> x.Value)
+let regexReplace  regex (replacement:string) text = Regex.Replace(text, regex, replacement)
+let regexRemove   regex                      text = Regex.Replace(text, regex, String.Empty)
 
 fsi.AddPrinter(fun (x: DateTimeOffset) ->
     let part1 = x.ToString "yyyy-MM-dd"
@@ -36,3 +43,11 @@ fsi.AddPrinter(fun (x: DateOnly) ->
 fsi.AddPrinter(fun (x: Decimal) ->
     let formatted = x.ToString $"f{x.Scale}" + "M"
     sprintf "%s%s%s" FOREGROUND_BRIGHT_GREEN formatted RESET_COLORS)
+
+fsi.AddPrinter(fun (x: TimeSpan) ->
+    let dimMilliseconds = regexReplace "\.\d+$" $"{DIM}$0{DIM_RESET}"
+    let orange s = sprintf "%s%s%s" FOREGROUND_ORANGE s RESET_COLORS
+
+    x.ToString "c"
+    |> dimMilliseconds
+    |> orange)
