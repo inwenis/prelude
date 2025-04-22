@@ -48,6 +48,8 @@ fsi.AddPrinter(fun (x: TimeSpan) ->
     let dimMilliseconds = regexReplace "\.\d+$" $"{DIM}$0{DIM_RESET}"
     let orange s = sprintf "%s%s%s" FOREGROUND_ORANGE s RESET_COLORS
 
+    // The BCL code for TimeSpan.ToString("c") is wild so I'll not replicate it here.
+    // Instead we will format it with "c" and add our colors afterwards.
     x.ToString "c"
     |> dimMilliseconds
     |> orange)
