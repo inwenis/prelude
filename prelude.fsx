@@ -53,3 +53,12 @@ fsi.AddPrinter(fun (x: TimeSpan) ->
     x.ToString "c"
     |> dimMilliseconds
     |> orange)
+
+open System.Runtime.CompilerServices
+open System.Runtime.InteropServices
+open System.IO
+
+// https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/caller-information
+type WorkingDirectorySetter() =
+    static member SetToMe( [<CallerFilePath; Optional; DefaultParameterValue("")>] path: string) =
+        Environment.CurrentDirectory <- Path.GetDirectoryName(path)
