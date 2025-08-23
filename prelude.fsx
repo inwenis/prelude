@@ -41,8 +41,8 @@ fsi.AddPrinter(fun (x: DateOnly) ->
 // I have tested that FOREGROUND_BRIGHT_GREEN is used by default for numbers in vs code fsi.
 // We would like to use the same color for our custom decimal printer.
 fsi.AddPrinter(fun (x: Decimal) ->
-    let formatted = x.ToString $"f{x.Scale}" + "M"
-    sprintf "%s%s%s" FOREGROUND_BRIGHT_GREEN formatted RESET_COLORS)
+    let formatted = x.ToString $"f{x.Scale}"
+    sprintf "%s%s%sM%s" FOREGROUND_BRIGHT_GREEN formatted DIM RESET_COLORS)
 
 fsi.AddPrinter(fun (x: TimeSpan) ->
     let dimMilliseconds = regexReplace "\.\d+$" $"{DIM}$0"
