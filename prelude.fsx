@@ -8,13 +8,6 @@ let FOREGROUND_BRIGHT_GREEN = "\u001b[92m"
 let FOREGROUND_ORANGE       = "\u001b[38;5;130m"
 let RESET_COLORS            = "\u001b[0m"
 
-// fsi.PrintWidth determines how long can a line be in the fsi window before it's wrapped.
-// The default is 78. We use 33 characters (as of now) to control the colors of DateTimeOffset.
-// We add 33 to fsi.PrintWidth to avoid wrapping most of the times.
-// Note that the value name is included when calculating the width of the line. Hence with a long
-// enough value name, the line will be wrapped.
-fsi.PrintWidth <- fsi.PrintWidth + 33
-
 let regexExtract  regex                      text = Regex.Match(text, regex).Value
 let regexExtractg regex                      text = Regex.Match(text, regex).Groups.[1].Value
 let regexExtracts regex                      text = Regex.Matches(text, regex) |> Seq.map (fun x -> x.Value)
